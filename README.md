@@ -1,11 +1,14 @@
 # Matrix bot nodes for Node-RED
 
 This package contains nodes to send and receive messages as a Matrix node.
+The goal of this fork is to include sending of files such as photo's in the package
 
 ## Quick usage guide
 
 This package adds 3 node types to Node-RED palette (Matrix section, at the bottom):
 * *Matrix sender*: sends messages from your Node-RED flow to the chatroom
+* *Matrix uploader*: send files to the Matrix room and returns their link
+* *Matrix send image*: send photo messages
 * *Matrix receiver*: listens to messages in a chatroom and sends them to your Node-RED flow
 * *Matrix command*: listens only to messages starting with a specific command and sends them to your Node-RED flow
 
