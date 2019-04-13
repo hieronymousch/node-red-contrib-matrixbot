@@ -95,6 +95,42 @@
 <!-- ------------------------------------------------------------------------------------------ -->
 
 <script type="text/javascript">
+    RED.nodes.registerType('matrix uploader',{
+        category: 'output',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            bot: { value:"", type: "matrix bot", required: true }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "matrix.png",
+        label: function() {
+            return this.name||"matrix uploader";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="matrix uploader">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+     <div class="form-row">
+        <label for="node-input-bot"><i class="fa fa-globe"></i> Connection</label>
+        <input type="text" id="node-input-bot" placeholder="Bot">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="matrix uploader">
+    <p>An output Matrix node that uploads a file to a chatroom.</p>
+    <p>Sends the <code>msg.payload</code> property as bytes to the chatroom is specified either by <code>msg.roomId</code> (which is filled by receiver nodes) or in the configuration node.</p>
+    <p>Outputs a message with the mxd of the file
+</script>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<script type="text/javascript">
     RED.nodes.registerType('matrix receiver',{
         category: 'input',
         color: '#a6bbcf',
