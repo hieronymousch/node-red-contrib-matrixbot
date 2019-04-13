@@ -192,6 +192,25 @@ module.exports = function(RED) {
         	}
 
             if (msg.payload) {
+		    
+		    // to include check for image or text, when image: 
+		    /*
+		    MatrixClient.prototype.sendImageMessage = function(roomId, url, info, text, callback) {
+    			if (utils.isFunction(text)) {
+				callback = text; text = undefined;
+			    }
+			    if (!text) {
+				text = "Image";
+			    }
+			    const content = {
+				 msgtype: "m.image",
+				 url: url,
+				 info: info,
+				 body: text,
+			    };
+			    return this.sendMessage(roomId, content, callback);
+
+			    */
 	        	node.log("Sending message " + msg.payload);
 
 	        	var destRoom = "";
