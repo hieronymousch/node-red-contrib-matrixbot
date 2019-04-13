@@ -165,6 +165,63 @@ module.exports = function(RED) {
 
 	RED.nodes.registerType("matrix sender", MatrixOutNode);
 
+// --------------------------------------------------------------------------------------------
+	// The upload node send a file to the chat.
+
+	function MatrixOutNode(config) {
+		RED.nodes.createNode(this, config);
+
+		// copy "this" object in case we need it in context of callbacks of other functions.
+		var node = this;
+        
+        // Configuration options passed by Node Red
+        node.configNode = RED.nodes.getNode(config.bot);
+
+        node.configNode.on("connected", function(){
+        	node.status({ fill: "green", shape: "ring", text: "connected" });
+        });
+
+        node.configNode.on("disconnected", function(){
+        	node.status({ fill: "red", shape: "ring", text: "disconnected" });
+        });
+
+        this.on("input", function (msg) {
+        	if (! node.configNode || ! node.configNode.matrixClient) {
+            	node.warn("No configuration");
+            	return;
+        	}
+
+            if (msg.payload) {
+	        	node.log("Sending message " + msg.payload);
+
+	        	var destRoom = "";
+	        	if (msg.roomId) {
+	        		destRoom = msg.roomId;
+	        	} else if (node.configNode.room) {
+	        		destRoom = node.configNode.room;
+	        	} else {
+	        		node.warn("Room must be specified in msg.roomId or in configuration");
+	        		return;
+	        	}
+
+	        	node.configNode.matrixClient.sendTextMessage(destRoom, msg.payload.toString())
+	        		.then(function() {
+               			node.log("Message sent: " + msg.payload);
+            		}).catch(function(e){
+            			node.warn("Error sending message " + e);
+            		});
+	        } else {
+                node.warn("msg.payload is empty");
+            }
+    	});
+
+    	this.on("close", function(done) {
+    		node.log("Matrix out node closing...");
+    		done();
+    	});
+    }
+
+	RED.nodes.registerType("matrix sender", MatrixOutNode);
 
 // --------------------------------------------------------------------------------------------
 	// The input node receives messages from the chat.
